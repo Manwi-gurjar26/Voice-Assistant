@@ -1,0 +1,20 @@
+# secrets
+.env
+
+# python
+__pycache__/
+*.pyc
+.venv/
+
+# terminal session captures (not project source)
+file.md
+work.md
+
+# editor/tooling
+.claude/
+.vscode/
+.idea/
+
+# OS
+Thumbs.db
+.DS_Store

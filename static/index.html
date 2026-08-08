@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aura — Realtime AI Voice Assistant</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/livekit-client/dist/livekit-client.umd.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="aurora" aria-hidden="true"></div>
+<div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
+
+<nav class="nav" id="nav">
+    <div class="wrap nav-inner">
+        <div class="brand">
+            <span class="brand-mark" aria-hidden="true"></span>
+            <span class="brand-name">Aura</span>
+        </div>
+        <div class="nav-links">
+            <a href="#talk">Talk</a>
+            <a href="#how">How it works</a>
+            <a href="#speed">Speed</a>
+            <a href="#privacy">Privacy</a>
+        </div>
+        <div class="pill" id="statusPill" data-state="offline">
+            <span class="dot" aria-hidden="true"></span>
+            <span id="statusLabel">Offline</span>
+        </div>
+    </div>
+</nav>
+
+<header class="hero" id="talk">
+    <div class="wrap hero-inner">
+        <div class="eyebrow rv"><span class="eyebrow-dot" aria-hidden="true"></span> Realtime voice AI</div>
+        <h1 class="hero-h1 rv">Speak. <em>Aura</em> listens, thinks, and replies out loud.</h1>
+        <p class="hero-sub rv">Built on LiveKit, Deepgram and Gemini — press the mic below and try it right now, no signup.</p>
+
+        <div class="stage rv">
+
+            <!-- Voice control -->
+            <section class="panel voice-panel">
+                <div class="orb-wrap">
+                    <canvas id="orb" aria-hidden="true"></canvas>
+                    <button class="mic" id="micBtn" type="button" aria-label="Start conversation">
+                        <span class="mic-halo" aria-hidden="true"></span>
+                        <span class="mic-face">
+                            <svg class="icon-mic" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                 stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/>
+                                <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+                                <line x1="12" y1="19" x2="12" y2="23"/>
+                            </svg>
+                            <svg class="icon-stop" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                                <rect x="6.5" y="6.5" width="11" height="11" rx="2.5"/>
+                            </svg>
+                        </span>
+                    </button>
+                </div>
+
+                <div class="voice-copy">
+                    <h2 id="headline">Tap to talk with Aura</h2>
+                    <p id="subline">Your microphone stays off until you connect.</p>
+                </div>
+
+                <div class="meta-row">
+                    <span class="chip" id="latencyChip" hidden>
+                        <span class="chip-key">Reply</span>
+                        <span class="chip-val" id="latencyValue">—</span>
+                    </span>
+                    <span class="chip" id="engineChip" hidden>
+                        <span class="chip-key">Model</span>
+                        <span class="chip-val" id="engineValue">—</span>
+                    </span>
+                </div>
+            </section>
+
+            <!-- Conversation -->
+            <section class="panel chat-panel">
+                <div class="chat-head">
+                    <h2>Conversation</h2>
+                    <button class="ghost-btn" id="clearBtn" type="button">Clear</button>
+                </div>
+
+                <div class="chat-scroll" id="chatScroll" role="log" aria-live="polite">
+                    <div class="empty" id="chatEmpty">
+                        <div class="empty-glyph" aria-hidden="true"></div>
+                        <p>Everything you say and everything Aura says will appear here.</p>
+                    </div>
+                </div>
+
+                <div class="chat-foot" id="typingRow" hidden>
+                    <span class="typing" aria-hidden="true"><i></i><i></i><i></i></span>
+                    <span id="typingText">Aura is thinking…</span>
+                </div>
+            </section>
+
+        </div>
+    </div>
+</header>
+
+<section class="section" id="how">
+    <div class="wrap">
+        <div class="section-head rv">
+            <div class="label">How it works</div>
+            <h2>Four stages, none of them waiting on you</h2>
+        </div>
+        <div class="grid">
+            <div class="card rv">
+                <div class="num">01</div>
+                <h3>Knows when you stop</h3>
+                <p>Voice-activity detection runs turn by turn, so Aura starts thinking the instant you finish — not a beat later.</p>
+            </div>
+            <div class="card rv">
+                <div class="num">02</div>
+                <h3>Hears you properly</h3>
+                <p>Deepgram's nova-3 model streams your speech to text as you talk, punctuation and all, even over background noise.</p>
+            </div>
+            <div class="card rv">
+                <div class="num">03</div>
+                <h3>Replies like a person</h3>
+                <p>Short, spoken-style answers — one idea at a time, never a wall of text read out loud at you.</p>
+            </div>
+            <div class="card rv">
+                <div class="num">04</div>
+                <h3>Can be interrupted</h3>
+                <p>Talk over her and she stops, listens, and picks the conversation back up. The way a real one works.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section" id="speed">
+    <div class="wrap">
+        <div class="section-head rv">
+            <div class="label">Latency</div>
+            <h2>Every millisecond is accounted for</h2>
+            <p class="lede">Under 800&nbsp;ms and a conversation feels normal. Here's roughly where Aura's time goes — your own reply time shows live in the <strong>Reply</strong> chip above once you talk.</p>
+        </div>
+        <div class="bars rv" id="bars">
+            <div class="bar-row"><div class="bname">Turn detection</div><div class="btrack"><div class="bfill" data-w="18" style="background:var(--user)"></div></div><div class="bval" data-n="90">0 ms</div></div>
+            <div class="bar-row"><div class="bname">Speech to text</div><div class="btrack"><div class="bfill" data-w="22" style="background:#eb6834"></div></div><div class="bval" data-n="110">0 ms</div></div>
+            <div class="bar-row"><div class="bname">Model response</div><div class="btrack"><div class="bfill" data-w="28" style="background:var(--agent)"></div></div><div class="bval" data-n="140">0 ms</div></div>
+            <div class="bar-row"><div class="bname">Speech synthesis</div><div class="btrack"><div class="bfill" data-w="20" style="background:var(--amber)"></div></div><div class="bval" data-n="100">0 ms</div></div>
+            <div class="bar-row"><div class="bname">Network</div><div class="btrack"><div class="bfill" data-w="12" style="background:var(--ink-mute)"></div></div><div class="bval" data-n="60">0 ms</div></div>
+        </div>
+    </div>
+</section>
+
+<section class="section" id="privacy">
+    <div class="wrap">
+        <div class="section-head rv">
+            <div class="label">Privacy</div>
+            <h2>Where your voice actually goes</h2>
+        </div>
+        <div class="grid">
+            <div class="card rv">
+                <h3>Mic only when you say so</h3>
+                <p>Your microphone stays off until you press the button. Nothing is captured before that.</p>
+            </div>
+            <div class="card rv">
+                <h3>Streamed, not stored</h3>
+                <p>Audio travels over an encrypted LiveKit connection straight to Deepgram for transcription — it isn't saved as a file anywhere.</p>
+            </div>
+            <div class="card rv">
+                <h3>Only the transcript reasons</h3>
+                <p>The language model sees the text of what's said, not the raw audio, to work out a reply.</p>
+            </div>
+            <div class="card rv">
+                <h3>You're in control</h3>
+                <p>Clear wipes the visible history any time, and closing the tab ends the session completely.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer class="footer">
+    <div class="wrap footer-inner">
+        <div class="brand">
+            <span class="brand-mark" aria-hidden="true"></span>
+            <span class="brand-name">Aura</span>
+        </div>
+        <button class="btn primary" id="footerTalk" type="button">Talk to Aura</button>
+        <div class="foot-meta">Built with LiveKit, Deepgram &amp; Gemini</div>
+    </div>
+</footer>
+
+<div class="toast" id="toast" role="alert" hidden></div>
+
+<script src="app.js"></script>
+</body>
+</html>

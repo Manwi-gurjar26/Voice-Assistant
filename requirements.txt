@@ -1,0 +1,11 @@
+# Aura voice assistant — pinned to the LiveKit Agents 1.x API used in agent.py.
+# The 0.x API is incompatible (different AgentSession / TurnHandlingOptions).
+livekit-agents>=1.6,<2
+livekit-plugins-deepgram>=1.6,<2
+livekit-plugins-openai>=1.6,<2
+livekit-plugins-google>=1.6,<2
+livekit-plugins-silero>=1.6,<2
+
+fastapi>=0.110
+uvicorn[standard]>=0.27
+python-dotenv>=1.0
